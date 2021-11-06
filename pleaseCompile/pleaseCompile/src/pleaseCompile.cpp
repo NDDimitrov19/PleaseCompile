@@ -55,7 +55,7 @@ public:
     int mazeSize[2] = { 10 , 10 };
     Maze maze= Maze(mazeSize[0], mazeSize[1]);
     int mazeWallSize = WINDOW_HEIGHT / mazeSize[1];
-    virtual bool OnUserCreate() {
+    bool OnUserCreate() override {
        
         for (auto& cell : maze.grid)
         {
@@ -77,7 +77,7 @@ public:
         return 1;
     }
     
-    virtual bool OnUserUpdate(float fElapsedTime) { 
+     bool OnUserUpdate(float fElapsedTime) override {
      FillRect(0, 0, ScreenWidth(), ScreenHeight(), olc::BLACK);
      DrawRect(player.x, player.y, mazeWallSize/2, mazeWallSize/2, olc::YELLOW);
      // DrawCircle(player.x, player.y, 5, olc::BLACK);
