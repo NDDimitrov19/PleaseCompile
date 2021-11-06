@@ -28,30 +28,27 @@ public:
         DrawLine(x2, y1, x1, y1, PIXEL_SOLID, c);
     }
     void MovePlayer(float fElapsedTime) {
-        std::string PlayerDirection;
+        short movementX = 0;
+        short movementY = 0;
         if (m_keys[L'W'].bHeld || m_keys[VK_UP].bHeld)
-            PlayerDirection = "up";
-        else if (m_keys[L'D'].bHeld || m_keys[VK_RIGHT].bHeld)
-            PlayerDirection = "right";
-        else if (m_keys[L'S'].bHeld || m_keys[VK_DOWN].bHeld)
-            PlayerDirection = "down";
-        else if (m_keys[L'A'].bHeld || m_keys[VK_LEFT].bHeld)
-            PlayerDirection = "left";
-
-        if (PlayerDirection == "up") {
-            PlayerY -= (float)PlayerSpeed * fElapsedTime;
+            movementY = -1;
+        if (m_keys[L'D'].bHeld || m_keys[VK_RIGHT].bHeld)
+            movementX = 1;
+        if (m_keys[L'S'].bHeld || m_keys[VK_DOWN].bHeld)
+            movementY = 1;
+        if (m_keys[L'A'].bHeld || m_keys[VK_LEFT].bHeld)
+            movementX = -1;
+        if ((movementX == 1 && movementY == 1) || (movementX == -1 && movementY == -1) || (movementX == 1 && movementY == -1) || (movementX == -1 && movementY == 1))
+        {
+            PlayerX += movementX * PlayerSpeed * fElapsedTime / 2;
+            PlayerY += movementY * PlayerSpeed * fElapsedTime / 2;
         }
-        if (PlayerDirection == "right") {
-            PlayerX += (float)PlayerSpeed * fElapsedTime;
-        }
-        if (PlayerDirection == "down") {
-            PlayerY += (float)PlayerSpeed * fElapsedTime;
-        }
-        if (PlayerDirection == "left") {
-            PlayerX -= (float)PlayerSpeed * fElapsedTime;
+        else
+        {
+            PlayerX += movementX * PlayerSpeed * fElapsedTime;
+            PlayerY += movementY * PlayerSpeed * fElapsedTime;
         }
     }
-   
     Maze maze;
     virtual bool OnUserCreate() {
         for (auto cell : maze.grid)
