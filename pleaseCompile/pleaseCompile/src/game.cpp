@@ -1,33 +1,56 @@
 #include "game.h"
 
-void Game::DrawRectangle(int x1, int y1, int x2, int y2, short c) {
-    DrawLine(x1, y1, x1, y2, PIXEL_SOLID, c);
-    DrawLine(x1, y2, x2, y2, PIXEL_SOLID, c);
-    DrawLine(x2, y2, x2, y1, PIXEL_SOLID, c);
-    DrawLine(x2, y1, x1, y1, PIXEL_SOLID, c);
-}
-
 void Game::MovePlayer(float fElapsedTime) {
     short movementX = 0;
     short movementY = 0;
-    if (m_keys[L'W'].bHeld || m_keys[VK_UP].bHeld)
+    if (GetKey(olc::Key::W).bHeld || GetKey(olc::Key::UP).bHeld)
         movementY = -1;
-    if (m_keys[L'D'].bHeld || m_keys[VK_RIGHT].bHeld)
+    if (GetKey(olc::Key::D).bHeld || GetKey(olc::Key::RIGHT).bHeld)
         movementX = 1;
-    if (m_keys[L'S'].bHeld || m_keys[VK_DOWN].bHeld)
+    if (GetKey(olc::Key::S).bHeld || GetKey(olc::Key::DOWN).bHeld)
         movementY = 1;
-    if (m_keys[L'A'].bHeld || m_keys[VK_LEFT].bHeld)
+    if (GetKey(olc::Key::A).bHeld || GetKey(olc::Key::LEFT).bHeld)
         movementX = -1;
     if ((movementX == 1 && movementY == 1) || (movementX == -1 && movementY == -1) || (movementX == 1 && movementY == -1) || (movementX == -1 && movementY == 1))
     {
-        PlayerX += movementX * PlayerSpeed * fElapsedTime / 2;
-        PlayerY += movementY * PlayerSpeed * fElapsedTime / 2;
+        player.x += movementX * player.speed * fElapsedTime / 2;
+        player.y += movementY * player.speed * fElapsedTime / 2;
     }
     else
     {
-        PlayerX += movementX * PlayerSpeed * fElapsedTime;
-        PlayerY += movementY * PlayerSpeed * fElapsedTime;
+        player.x += movementX * player.speed * fElapsedTime;
+        player.y += movementY * player.speed * fElapsedTime;
     }
 }
+bool Game::OnUserCreate()  {
 
-
+    for (auto& cell : maze.grid)
+    {
+        if (cell->walls[Maze::CellWallDirs::top]) {
+            this->wallCoords.push_back({ {cell->x * mazeWallSize, cell->y * mazeWallSize}, {cell->x * mazeWallSize + mazeWallSize, cell->y * mazeWallSize} });
+        }
+        if (cell->walls[Maze::CellWallDirs::right]) {
+            this->wallCoords.push_back({ {cell->x * mazeWallSize + mazeWallSize, cell->y * mazeWallSize}, {cell->x * mazeWallSize + mazeWallSize, cell->y * mazeWallSize + mazeWallSize} });
+        }
+        // Optimization
+        //if (cell->walls[Maze::CellWallDirs::bottom]) {
+        //    this->wallCoords.push_back({ {cell->x * 20, cell->y * 20 + 20}, {cell->x * 20 + 20, cell->y * 20 + 20} });
+        //}
+        //if (cell->walls[Maze::CellWallDirs::left]) {
+        //    this->wallCoords.push_back({ {cell->x * 20, cell->y * 20}, {cell->x * 20, cell->y * 20 + 20} });
+        //}
+    }
+    return 1;
+}
+bool Game::OnUserUpdate(float fElapsedTime)  {
+        FillRect(0, 0, ScreenWidth(), ScreenHeight(), olc::BLACK);
+        MovePlayer(fElapsedTime);
+        DrawRect(player.x, player.y, mazeWallSize / 2, mazeWallSize / 2, olc::YELLOW);
+        // DrawCircle(player.x, player.y, 5, olc::BLACK);
+        DrawRect(0, 0, ScreenWidth() - 1, ScreenHeight() - 1, olc::WHITE);
+        for (auto& wall : this->wallCoords)
+        {
+            DrawLine(wall.first.x, wall.first.y, wall.second.x, wall.second.y, olc::WHITE);
+        }
+        return 1;
+}
