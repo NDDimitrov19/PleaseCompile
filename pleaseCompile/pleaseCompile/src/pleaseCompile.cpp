@@ -2,8 +2,8 @@
 
 int main()
 {
-    Game GameConsole;
+    Game GameWindow;
     
-    if (GameConsole.Construct(WINDOW_WIDTH, WINDOW_HEIGHT, PIXEL_SIZE, PIXEL_SIZE));
-        GameConsole.Start();
+    if (GameWindow.Construct(WINDOW_WIDTH, WINDOW_HEIGHT, PIXEL_SIZE, PIXEL_SIZE));
+        GameWindow.Start();
 }
