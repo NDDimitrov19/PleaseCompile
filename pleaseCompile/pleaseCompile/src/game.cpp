@@ -26,11 +26,11 @@ bool Game::OnUserCreate()  {
 
     for (auto& cell : maze.grid)
     {
-        if (cell->walls[Maze::CellWallDirs::top]) {
-            this->wallCoords.push_back({ {cell->x * mazeWallSize, cell->y * mazeWallSize}, {cell->x * mazeWallSize + mazeWallSize, cell->y * mazeWallSize} });
+        if (cell.walls[Maze::CellWallDirs::top]) {
+            this->wallCoords.push_back({ {cell.x * mazeWallSize, cell.y * mazeWallSize}, {cell.x * mazeWallSize + mazeWallSize, cell.y * mazeWallSize} });
         }
-        if (cell->walls[Maze::CellWallDirs::right]) {
-            this->wallCoords.push_back({ {cell->x * mazeWallSize + mazeWallSize, cell->y * mazeWallSize}, {cell->x * mazeWallSize + mazeWallSize, cell->y * mazeWallSize + mazeWallSize} });
+        if (cell.walls[Maze::CellWallDirs::right]) {
+            this->wallCoords.push_back({ {cell.x * mazeWallSize + mazeWallSize, cell.y * mazeWallSize}, {cell.x * mazeWallSize + mazeWallSize, cell.y * mazeWallSize + mazeWallSize} });
         }
         // Optimization
         //if (cell->walls[Maze::CellWallDirs::bottom]) {

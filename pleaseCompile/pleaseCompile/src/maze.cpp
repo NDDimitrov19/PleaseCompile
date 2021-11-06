@@ -10,10 +10,10 @@ Maze::Maze(int cols, int rows)
 
 Maze::~Maze()
 {
-	for (auto i : grid)
-	{
-		delete i;
-	}
+	//for (auto i : grid)
+	//{
+	//	delete i;
+	//}
 }
 
 Maze::Cell::Cell(int xPos, int yPos)
@@ -27,10 +27,10 @@ void Maze::generateMaze(const int& cols, const int& rows)
 	// Generate cells
 	for (int i = 0; i < cols; i++)
 		for (int j = 0; j < rows; j++)
-			this->grid.push_back(new Cell(j, i));
+			this->grid.push_back(Cell(j, i));
 
 	// Choose starting point
-	this->currentCell = this->grid[0];
+	this->currentCell = &this->grid[0];
 	this->currentCell->visited = true;
 	this->cellStack.push(this->currentCell);
 
@@ -82,10 +82,10 @@ Maze::Cell* Maze::getRandUnvisitedNeighbourAt(const int& x, const int& y)
 {
 	std::vector<Cell*> neighbours;
 
-	Cell* top    = y > 0              ? grid[x     + (y - 1) * cols] : nullptr;
-	Cell* right  = x < this->cols - 1 ? grid[x + 1 +  y      * cols] : nullptr;
-	Cell* bottom = y < this->rows - 1 ? grid[x     + (y + 1) * cols] : nullptr;
-	Cell* left   = x > 0              ? grid[x - 1 +  y      * cols] : nullptr;
+	Cell* top    = y > 0              ? &grid[x     + (y - 1) * cols] : nullptr;
+	Cell* right  = x < this->cols - 1 ? &grid[x + 1 +  y      * cols] : nullptr;
+	Cell* bottom = y < this->rows - 1 ? &grid[x     + (y + 1) * cols] : nullptr;
+	Cell* left   = x > 0              ? &grid[x - 1 +  y      * cols] : nullptr;
 
 	if (top && !top->visited)       neighbours.push_back(top);
 	if (right && !right->visited)   neighbours.push_back(right);

@@ -23,7 +23,7 @@ private:
 	};
 
 public:
-	std::vector<Cell*> grid;
+	std::vector<Cell> grid;
 
 private:
 	std::stack<Cell*> cellStack;
