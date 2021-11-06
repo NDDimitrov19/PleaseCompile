@@ -172,6 +172,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="C:\Users\Nikola\Desktop\icon.ico" />
+    <Image Include="icon.ico" />
+    <Image Include="resources\icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
