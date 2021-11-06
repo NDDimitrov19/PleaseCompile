@@ -4,15 +4,21 @@
 #include "maze.h"
 #include "olcConsoleGameEngine.h"
 
+#define WINDOW_WIDTH = 200
+#define WINDOW_HEIGHT = 200
+
 class Game : public olcConsoleGameEngine
 {
 private:
+    struct Player {
+        float x;
+        float y;
+        float speed;
+    };
 
 public:
     Game() {}
-    float PlayerX = 0;
-    float PlayerY = 0;
-    float PlayerSpeed = 30;
+    Player player = {0,0,30};
     struct coords
     {
         int x;
@@ -40,13 +46,13 @@ public:
             movementX = -1;
         if ((movementX == 1 && movementY == 1) || (movementX == -1 && movementY == -1) || (movementX == 1 && movementY == -1) || (movementX == -1 && movementY == 1))
         {
-            PlayerX += movementX * PlayerSpeed * fElapsedTime / 2;
-            PlayerY += movementY * PlayerSpeed * fElapsedTime / 2;
+            player.x += movementX * player.speed * fElapsedTime / 2;
+            player.y += movementY * player.speed * fElapsedTime / 2;
         }
         else
         {
-            PlayerX += movementX * PlayerSpeed * fElapsedTime;
-            PlayerY += movementY * PlayerSpeed * fElapsedTime;
+            player.x += movementX * player.speed * fElapsedTime;
+            player.y += movementY * player.speed * fElapsedTime;
         }
     }
     Maze maze;
@@ -74,8 +80,7 @@ public:
     virtual bool OnUserUpdate(float fElapsedTime) {
 
      Fill(0, 0, ScreenWidth(), ScreenHeight(), PIXEL_SOLID, FG_GREEN);
-
-     DrawRectangle(PlayerX, PlayerY, PlayerX + 10, PlayerY + 10, FG_BLACK);
+     DrawRectangle(player.x, player.y, player.x + 10, player.y + 10, FG_BLACK);
 
      for (auto wall : this->wallCoords)
      {
@@ -89,8 +94,7 @@ public:
 };
 int main()
 {
-  Game GameConsole;
-
+    Game GameConsole;
     GameConsole.ConstructConsole(200,200,4, 4);
     GameConsole.Start();
 }
