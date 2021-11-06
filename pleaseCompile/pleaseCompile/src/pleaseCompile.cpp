@@ -5,9 +5,13 @@
 
 class Game : public olcConsoleGameEngine
 {
+private:
+
 public:
     Game() {}
-        
+    float PlayerX = 0;
+    float PlayerY = 0;
+    float PlayerSpeed = 30;
 
     void DrawRectangle(int x1, int y1, int x2, int y2, short c) {
         DrawLine(x1, y1, x1, y2, PIXEL_SOLID, c);
@@ -15,7 +19,9 @@ public:
         DrawLine(x2, y2, x2, y1, PIXEL_SOLID, c);
         DrawLine(x2, y1, x1, y1, PIXEL_SOLID, c);
     }
+    void MovePlayer(float fElapsedTime) {
 
+    }
    /* void MakeBordersData() {
         for (int j = 0; j < 4; j++) {
             for (int k = 0; k < 4; k++) {
@@ -80,46 +86,38 @@ public:
     */
     Maze maze;
     virtual bool OnUserCreate() {
-
-     //   MakeBordersData();
-
         return 1;
     }
-    float dx = 0, dy = 0;
-    float i = 60;
+    
     virtual bool OnUserUpdate(float fElapsedTime) {
 
-        Fill(0, 0, ScreenWidth(), ScreenHeight(), PIXEL_SOLID, FG_GREEN);
+     Fill(0, 0, ScreenWidth(), ScreenHeight(), PIXEL_SOLID, FG_GREEN);
 
-        float orgDx = dx;
-        float orgDy = dy;
-        if (m_keys[L'W'].bHeld)
-            dy -= i * fElapsedTime;
-        if (m_keys[L'A'].bHeld)
-            dx -= i * fElapsedTime;
-        if (m_keys[L'S'].bHeld)
-            dy += i * fElapsedTime;
-        if (m_keys[L'D'].bHeld)
-            dx += i * fElapsedTime;
-        if (dy + 10 > ScreenHeight()) {
-            dy = orgDy;
-        }
-        if (dy < 0) {
-            dy = orgDy;
-        }
-        if (dx + 10 > ScreenWidth()) {
-            dx = orgDx;
-        }
-        if (dx < 0) {
-            dx = orgDx;
-        }
-     // Collision(&dx, &dy, &orgDx, &orgDy);
-     // DrawRectangle(dx, dy, dx + 10, dy + 10, FG_BLACK);
-     // MakeBorders();
+     DrawRectangle(PlayerX, PlayerY, PlayerX + 10, PlayerY + 10, FG_BLACK);
+     std::string PlayerDirection;
+     if (m_keys[L'W'].bHeld || m_keys[VK_UP].bHeld)
+         PlayerDirection = "up";
+     if (m_keys[L'D'].bHeld || m_keys[VK_RIGHT].bHeld)
+         PlayerDirection = "right";
+     if (m_keys[L'S'].bHeld || m_keys[VK_DOWN].bHeld)
+         PlayerDirection = "down";
+     if (m_keys[L'A'].bHeld || m_keys[VK_LEFT].bHeld)
+         PlayerDirection = "left";
+
+     if (PlayerDirection == "up") {
+         PlayerY -= (float)PlayerSpeed * fElapsedTime;
+     }
+     if (PlayerDirection == "right") {
+         PlayerX += (float)PlayerSpeed *fElapsedTime;
+     }
+     if (PlayerDirection == "down") {
+         PlayerY += (float)PlayerSpeed * fElapsedTime;
+     }
+     if (PlayerDirection == "left") {
+         PlayerX -= (float)PlayerSpeed * fElapsedTime;
+     }
         for (auto cell : maze.grid)
         {
-           
-
             if (cell->walls[Maze::CellWallDirs::top]) {
                 DrawLine(cell->x * 20, cell->y * 20, cell->x * 20 + 20, cell->y * 20, FG_BLACK);
             }
