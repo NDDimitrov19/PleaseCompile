@@ -85,7 +85,7 @@
 
 If you want to say **thank you** or/and support active development of Please Compile:
 
-- Add a [GitHub Star](https://github.com/EDSemenov/Maze Game) to the project.
+- Add a [GitHub Star](https://github.com/NDDimitrov19/PleaseCompile) to the project.
 - Tweet about the Please Compile.
 - Write interesting articles about the project on [Dev.to](https://dev.to/), [Medium](https://medium.com/) or your personal blog.
 
