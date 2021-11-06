@@ -62,12 +62,13 @@ public:
             if (cell->walls[Maze::CellWallDirs::right]) {
                 this->wallCoords.push_back({ {cell->x * 20 + 20, cell->y * 20}, {cell->x * 20 + 20, cell->y * 20 + 20} });
             }
-            if (cell->walls[Maze::CellWallDirs::bottom]) {
+            // Optimization
+            //if (cell->walls[Maze::CellWallDirs::bottom]) {
             //    this->wallCoords.push_back({ {cell->x * 20, cell->y * 20 + 20}, {cell->x * 20 + 20, cell->y * 20 + 20} });
-            }
-            if (cell->walls[Maze::CellWallDirs::left]) {
+            //}
+            //if (cell->walls[Maze::CellWallDirs::left]) {
             //    this->wallCoords.push_back({ {cell->x * 20, cell->y * 20}, {cell->x * 20, cell->y * 20 + 20} });
-            }
+            //}
         }
 
         return 1;
