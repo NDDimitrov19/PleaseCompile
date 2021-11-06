@@ -95,7 +95,7 @@ Maze::Cell* Maze::getRandUnvisitedNeighbourAt(const int& x, const int& y)
 	if (!neighbours.empty())
 	{
 		GRand r;
-		int index = r.i(neighbours.size());
+		int index = r.i((int)neighbours.size());
 		return neighbours[index];
 	}
 
