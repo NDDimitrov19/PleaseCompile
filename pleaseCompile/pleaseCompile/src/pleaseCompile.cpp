@@ -2,12 +2,12 @@
 #include <vector>
 #include <set>
 #include "maze.h"
-#include "olcConsoleGameEngine.h"
+#include "olcPixelGameEngine.h"
 
 #define WINDOW_WIDTH = 200
 #define WINDOW_HEIGHT = 200
 
-class Game : public olcConsoleGameEngine
+class Game : public olc::PixelGameEngine
 {
 private:
     struct Player {
@@ -27,22 +27,16 @@ public:
 
     std::vector< std::pair<coords, coords> > wallCoords;
 
-    void DrawRectangle(int x1, int y1, int x2, int y2, short c) {
-        DrawLine(x1, y1, x1, y2, PIXEL_SOLID, c);
-        DrawLine(x1, y2, x2, y2, PIXEL_SOLID, c);
-        DrawLine(x2, y2, x2, y1, PIXEL_SOLID, c);
-        DrawLine(x2, y1, x1, y1, PIXEL_SOLID, c);
-    }
     void MovePlayer(float fElapsedTime) {
         short movementX = 0;
         short movementY = 0;
-        if (m_keys[L'W'].bHeld || m_keys[VK_UP].bHeld)
+        if (GetKey(olc::Key::W).bHeld || GetKey(olc::Key::UP).bHeld)
             movementY = -1;
-        if (m_keys[L'D'].bHeld || m_keys[VK_RIGHT].bHeld)
+        if (GetKey(olc::Key::D).bHeld || GetKey(olc::Key::RIGHT).bHeld)
             movementX = 1;
-        if (m_keys[L'S'].bHeld || m_keys[VK_DOWN].bHeld)
+        if (GetKey(olc::Key::S).bHeld || GetKey(olc::Key::DOWN).bHeld)
             movementY = 1;
-        if (m_keys[L'A'].bHeld || m_keys[VK_LEFT].bHeld)
+        if (GetKey(olc::Key::A).bHeld || GetKey(olc::Key::LEFT).bHeld)
             movementX = -1;
         if ((movementX == 1 && movementY == 1) || (movementX == -1 && movementY == -1) || (movementX == 1 && movementY == -1) || (movementX == -1 && movementY == 1))
         {
@@ -79,12 +73,13 @@ public:
     
     virtual bool OnUserUpdate(float fElapsedTime) {
 
-     Fill(0, 0, ScreenWidth(), ScreenHeight(), PIXEL_SOLID, FG_GREEN);
-     DrawRectangle(player.x, player.y, player.x + 10, player.y + 10, FG_BLACK);
+     FillRect(0, 0, ScreenWidth(), ScreenHeight(), olc::GREEN);
+     DrawRect(player.x, player.y, 10, 10, olc::BLACK);
+     // DrawCircle(player.x, player.y, 5, olc::BLACK);
 
      for (auto wall : this->wallCoords)
      {
-         DrawLine(wall.first.x, wall.first.y, wall.second.x, wall.second.y, FG_BLACK);
+         DrawLine(wall.first.x, wall.first.y, wall.second.x, wall.second.y, olc::BLACK);
      }
 
      MovePlayer(fElapsedTime);
@@ -95,6 +90,6 @@ public:
 int main()
 {
     Game GameConsole;
-    GameConsole.ConstructConsole(200,200,4, 4);
-    GameConsole.Start();
+    if (GameConsole.Construct(200,200,4, 4))
+        GameConsole.Start();
 }

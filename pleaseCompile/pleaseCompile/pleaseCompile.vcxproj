@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\maze.cpp" />
+    <ClCompile Include="src\olcPixelGameEngine.cpp" />
     <ClCompile Include="src\pleaseCompile.cpp" />
   </ItemGroup>
   <ItemGroup>
