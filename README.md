@@ -1,6 +1,6 @@
 <h1 align="center">
   <a href="https://github.com/NDDimitrov19/PleaseCompile">
-    <img src="docs/images/logo2.png" alt="Logo" width="240" height="100">
+    <img src="docs/images/logo.png" alt="Logo" width="340" height="100">
   </a>
 </h1>
 
