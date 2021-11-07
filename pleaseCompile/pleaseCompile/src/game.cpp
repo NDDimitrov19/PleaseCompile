@@ -5,13 +5,25 @@ void Game::MovePlayer(float fElapsedTime)
     short movementX = 0;
     short movementY = 0;
     if (GetKey(olc::Key::W).bHeld || GetKey(olc::Key::UP).bHeld)
-        movementY = -1;
+    {
+        if(!isColliding(player.x,player.y-1))
+           movementY = -1;
+    }
     if (GetKey(olc::Key::D).bHeld || GetKey(olc::Key::RIGHT).bHeld)
-        movementX = 1;
+    {
+        if (!isColliding(player.x + 1, player.y))
+            movementX = 1;
+    }
     if (GetKey(olc::Key::S).bHeld || GetKey(olc::Key::DOWN).bHeld)
-        movementY = 1;
+    {
+        if (!isColliding(player.x, player.y + 1))
+            movementY = 1;
+    }
     if (GetKey(olc::Key::A).bHeld || GetKey(olc::Key::LEFT).bHeld)
-        movementX = -1;
+    {
+        if (!isColliding(player.x - 1, player.y))
+            movementX = -1;
+    }
     if ((movementX == 1 && movementY == 1) || (movementX == -1 && movementY == -1) || (movementX == 1 && movementY == -1) || (movementX == -1 && movementY == 1))
     {
         player.x += movementX * player.speed * fElapsedTime / 2;
@@ -22,6 +34,7 @@ void Game::MovePlayer(float fElapsedTime)
         player.x += movementX * player.speed * fElapsedTime;
         player.y += movementY * player.speed * fElapsedTime;
     }
+
 }
 bool Game::isColliding(float playerX, float playerY)
 {
@@ -34,7 +47,6 @@ bool Game::isColliding(float playerX, float playerY)
         {
             if (playerX - 1 <= wall.second.x && playerX + mazeWallSize / 2 >= wall.first.x)
                 xCheck = true;
-
 
             if (playerY - 1 <= wall.first.y && playerY + mazeWallSize / 2 >= wall.first.y)
                 yCheck = true;
