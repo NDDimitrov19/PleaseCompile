@@ -23,6 +23,40 @@ void Game::MovePlayer(float fElapsedTime)
         player.y += movementY * player.speed * fElapsedTime;
     }
 }
+bool Game::isColliding(float playerX, float playerY)
+{
+    for (auto& wall : wallCoords)
+    {
+        bool xCheck = false;
+        bool yCheck = false;
+        //if Horizontal wall
+        if (wall.first.y == wall.second.y)
+        {
+            if (playerX - 1 <= wall.second.x && playerX + mazeWallSize / 2 >= wall.first.x)
+                xCheck = true;
+
+
+            if (playerY - 1 <= wall.first.y && playerY + mazeWallSize / 2 >= wall.first.y)
+                yCheck = true;
+
+
+        }
+        //if Vertical wall
+        else if (wall.first.x == wall.second.x)
+        {
+            if (playerX - 1 <= wall.first.x && playerX + mazeWallSize / 2 >= wall.first.x)
+                xCheck = true;
+
+            if (playerY - 1 <= wall.second.y && playerY + mazeWallSize / 2 >= wall.first.y)
+                yCheck = true;
+        }
+
+        if (xCheck && yCheck)
+            return true;
+    }
+
+    return false;
+}
 
 bool Game::OnUserCreate()  
 {

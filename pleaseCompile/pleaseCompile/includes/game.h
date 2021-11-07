@@ -32,6 +32,7 @@ private:
     Maze maze = Maze(mazeSize[0], mazeSize[1]);
     int mazeWallSize = WINDOW_HEIGHT / mazeSize[1];
     Player player = { (float)(mazeWallSize / 4),(float)(mazeWallSize / 4),30.0f };
+    bool isColliding(float playerX, float playerY);
     bool OnUserCreate() override;
 
     bool OnUserUpdate(float fElapsedTime) override;
