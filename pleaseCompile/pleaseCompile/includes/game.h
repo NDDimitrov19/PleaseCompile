@@ -44,12 +44,15 @@ private:
     int mazeWallSize;
     int nLayerBackground;
 
+    void handleMenu();
     bool Menu();
     bool MenuPlay();
     bool MenuCredits();
     bool MenuHow();
 
     void createMazeData();
+    void createBackgroundLayer();
+    void initMazeData();
 
     bool isColliding(float playerX, float playerY, float playerSize);
     void handleInput(float fElapsedTime);
