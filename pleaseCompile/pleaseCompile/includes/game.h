@@ -10,32 +10,44 @@
 class Game : public olc::PixelGameEngine
 {
 public:
-    Game() {}
+    Game();
 private:
+    struct Colors
+    {
+        olc::Pixel background;
+        olc::Pixel walls;
+        olc::Pixel player;
+        olc::Pixel start;
+        olc::Pixel end;
+    } scheme;
+
     struct Player {
         float x;
         float y;
         float speed;
         float size;
-    };
-
-    int nLayerBackground;
+    } player;
 
     struct coords
     {
         int x;
         int y;
     };
+
     std::vector< std::pair<coords, coords> > wallCoords;
+    
+    Maze maze;
 
-    void MovePlayer(float fElapsedTime);
-    int mazeSize[2] = { 10 , 10 };
-    Maze maze = Maze(mazeSize[0], mazeSize[1]);
-    int mazeWallSize = WINDOW_HEIGHT / mazeSize[1];
-    Player player = { (float)(mazeWallSize / 4), (float)(mazeWallSize / 4), 30.0f ,(float)(mazeWallSize / 2) };
-    bool isColliding(float playerX, float playerY,float playerSize);
+    int mazeSize[2];
+    int mazeWallSize;
+    int nLayerBackground;
+
+    void createMazeData();
+
+    bool isColliding(float playerX, float playerY, float playerSize);
+    void movePlayer(float fElapsedTime);
+
     bool OnUserCreate() override;
-
     bool OnUserUpdate(float fElapsedTime) override;
 
 };
