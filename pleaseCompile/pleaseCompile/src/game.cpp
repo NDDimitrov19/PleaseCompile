@@ -10,6 +10,8 @@ Game::Game()
     scheme = { olc::BLACK, olc::WHITE,olc::YELLOW,olc::RED , olc::GREEN };
 }
 
+
+
 void Game::createMazeData()
 {
     // Add outer edges
@@ -71,10 +73,21 @@ bool Game::isColliding(float playerX, float playerY, float playerSize)
     return false;
 }
 
-void Game::movePlayer(float fElapsedTime) 
+void Game::handleInput(float fElapsedTime)
 {
     short movementX = 0;
     short movementY = 0;
+    float speedBoost = 1.0f;
+
+    // Cheats 
+    speedBoost = GetKey(olc::Key::SHIFT).bHeld ? 2.54f : 1.0f;
+
+    if (GetKey(olc::Key::R).bPressed)
+    {
+        player.x = (float)(mazeWallSize / 4);
+        player.y = (float)(mazeWallSize / 4);
+    }
+
     if (GetKey(olc::Key::W).bHeld || GetKey(olc::Key::UP).bHeld)
     {
         if(!isColliding(player.x,player.y-1, player.size))
@@ -97,14 +110,21 @@ void Game::movePlayer(float fElapsedTime)
     }
     if ((movementX == 1 && movementY == 1) || (movementX == -1 && movementY == -1) || (movementX == 1 && movementY == -1) || (movementX == -1 && movementY == 1))
     {
-        player.x += movementX * player.speed * fElapsedTime / 2;
-        player.y += movementY * player.speed * fElapsedTime / 2;
+        player.x += movementX * player.speed * speedBoost * fElapsedTime / 2;
+        player.y += movementY * player.speed * speedBoost * fElapsedTime / 2;
     }
     else
     {
-        player.x += movementX * player.speed * fElapsedTime;
-        player.y += movementY * player.speed * fElapsedTime;
+        player.x += movementX * player.speed * speedBoost * fElapsedTime;
+        player.y += movementY * player.speed * speedBoost * fElapsedTime;
     }
+
+}
+
+void Game::drawStartFinish()
+{
+    FillRect(1, 1, mazeWallSize, mazeWallSize, scheme.start);
+    FillRect(ScreenWidth() - mazeWallSize + 1, ScreenHeight() - mazeWallSize + 1, mazeWallSize, mazeWallSize, scheme.end);
 }
 
 bool Game::OnUserCreate()  
@@ -116,6 +136,7 @@ bool Game::OnUserCreate()
     SetDrawTarget(nLayerBackground);
 
     Clear(scheme.background);
+    drawStartFinish();
     for (auto& wall : this->wallCoords)
     {
         DrawLine(wall.first.x, wall.first.y, wall.second.x, wall.second.y, scheme.walls);
@@ -131,7 +152,7 @@ bool Game::OnUserUpdate(float fElapsedTime)
 {
         Clear(olc::BLANK);
 
-        movePlayer(fElapsedTime);
+        handleInput(fElapsedTime);
         DrawRect(player.x, player.y, player.size, player.size, scheme.player);
 
         return 1;

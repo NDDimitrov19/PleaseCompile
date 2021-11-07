@@ -45,7 +45,9 @@ private:
     void createMazeData();
 
     bool isColliding(float playerX, float playerY, float playerSize);
-    void movePlayer(float fElapsedTime);
+    void handleInput(float fElapsedTime);
+
+    void drawStartFinish();
 
     bool OnUserCreate() override;
     bool OnUserUpdate(float fElapsedTime) override;
