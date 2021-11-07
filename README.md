@@ -51,7 +51,7 @@
 
 |                               The Game                               |                               Game over                                |
 | :-------------------------------------------------------------------: | :--------------------------------------------------------------------: |
-| <img src="docs/images/screenshot.png" title="The Game" width="100%"> | <img src="docs/images/screenshot.png" title="Game Over" width="100%"> |
+| <img src="docs/images/screenshot.png" title="The Game" width="100%"> | <img src="docs/images/screenshot2.png" title="Game Over" width="100%"> |
 
 </details>
 
