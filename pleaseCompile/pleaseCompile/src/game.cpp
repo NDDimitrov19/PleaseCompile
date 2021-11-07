@@ -72,6 +72,13 @@ bool Game::isColliding(float playerX, float playerY)
 
 bool Game::OnUserCreate()  
 {
+    // Add outer edges
+    wallCoords.push_back({ {0, 0}, {ScreenWidth(), 0} });
+    wallCoords.push_back({ {ScreenWidth() - 1, 0}, {ScreenWidth() - 1, ScreenHeight() - 1} });
+    wallCoords.push_back({ {0, ScreenHeight() - 1}, {ScreenWidth() - 1, ScreenHeight() - 1} });
+    wallCoords.push_back({ {0, 0}, {0, ScreenHeight() - 1} });
+
+    // Add maze walls
     for (auto& cell : maze.grid)
     {
         if (cell.walls[Maze::CellWallDirs::top]) {
@@ -81,11 +88,11 @@ bool Game::OnUserCreate()
             this->wallCoords.push_back({ {cell.x * mazeWallSize + mazeWallSize, cell.y * mazeWallSize}, {cell.x * mazeWallSize + mazeWallSize, cell.y * mazeWallSize + mazeWallSize} });
         }
         // Optimization
-        //if (cell->walls[Maze::CellWallDirs::bottom]) {
-        //    this->wallCoords.push_back({ {cell->x * 20, cell->y * 20 + 20}, {cell->x * 20 + 20, cell->y * 20 + 20} });
+        //if (cell.walls[Maze::CellWallDirs::bottom]) {
+        //    this->wallCoords.push_back({ {cell.x * 20, cell.y * 20 + 20}, {cell.x * 20 + 20, cell.y * 20 + 20} });
         //}
-        //if (cell->walls[Maze::CellWallDirs::left]) {
-        //    this->wallCoords.push_back({ {cell->x * 20, cell->y * 20}, {cell->x * 20, cell->y * 20 + 20} });
+        //if (cell.walls[Maze::CellWallDirs::left]) {
+        //    this->wallCoords.push_back({ {cell.x * 20, cell.y * 20}, {cell.x * 20, cell.y * 20 + 20} });
         //}
     }
 
@@ -95,7 +102,6 @@ bool Game::OnUserCreate()
     {
         DrawLine(wall.first.x, wall.first.y, wall.second.x, wall.second.y, olc::WHITE);
     }
-    DrawRect(0, 0, ScreenWidth() - 1, ScreenHeight() - 1, olc::WHITE);
     EnableLayer(nLayerBackground, true);
     SetDrawTarget(nullptr);
     return 1;
