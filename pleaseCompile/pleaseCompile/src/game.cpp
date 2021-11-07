@@ -6,22 +6,22 @@ void Game::MovePlayer(float fElapsedTime)
     short movementY = 0;
     if (GetKey(olc::Key::W).bHeld || GetKey(olc::Key::UP).bHeld)
     {
-        if(!isColliding(player.x,player.y-1))
+        if(!isColliding(player.x,player.y-1, player.size))
            movementY = -1;
     }
     if (GetKey(olc::Key::D).bHeld || GetKey(olc::Key::RIGHT).bHeld)
     {
-        if (!isColliding(player.x + 1, player.y))
+        if (!isColliding(player.x + 1, player.y, player.size))
             movementX = 1;
     }
     if (GetKey(olc::Key::S).bHeld || GetKey(olc::Key::DOWN).bHeld)
     {
-        if (!isColliding(player.x, player.y + 1))
+        if (!isColliding(player.x, player.y + 1, player.size))
             movementY = 1;
     }
     if (GetKey(olc::Key::A).bHeld || GetKey(olc::Key::LEFT).bHeld)
     {
-        if (!isColliding(player.x - 1, player.y))
+        if (!isColliding(player.x - 1, player.y, player.size))
             movementX = -1;
     }
     if ((movementX == 1 && movementY == 1) || (movementX == -1 && movementY == -1) || (movementX == 1 && movementY == -1) || (movementX == -1 && movementY == 1))
@@ -36,7 +36,7 @@ void Game::MovePlayer(float fElapsedTime)
     }
 
 }
-bool Game::isColliding(float playerX, float playerY)
+bool Game::isColliding(float playerX, float playerY, float playerSize)
 {
     for (auto& wall : wallCoords)
     {
@@ -45,10 +45,10 @@ bool Game::isColliding(float playerX, float playerY)
         //if Horizontal wall
         if (wall.first.y == wall.second.y)
         {
-            if (playerX - 1 <= wall.second.x && playerX + mazeWallSize / 2 >= wall.first.x)
+            if (playerX - 1 <= wall.second.x && playerX + playerSize >= wall.first.x)
                 xCheck = true;
 
-            if (playerY - 1 <= wall.first.y && playerY + mazeWallSize / 2 >= wall.first.y)
+            if (playerY - 1 <= wall.first.y && playerY + playerSize >= wall.first.y)
                 yCheck = true;
 
 
@@ -56,10 +56,10 @@ bool Game::isColliding(float playerX, float playerY)
         //if Vertical wall
         else if (wall.first.x == wall.second.x)
         {
-            if (playerX - 1 <= wall.first.x && playerX + mazeWallSize / 2 >= wall.first.x)
+            if (playerX - 1 <= wall.first.x && playerX + playerSize >= wall.first.x)
                 xCheck = true;
 
-            if (playerY - 1 <= wall.second.y && playerY + mazeWallSize / 2 >= wall.first.y)
+            if (playerY - 1 <= wall.second.y && playerY + playerSize >= wall.first.y)
                 yCheck = true;
         }
 
@@ -112,7 +112,7 @@ bool Game::OnUserUpdate(float fElapsedTime)
         Clear(olc::BLANK);
 
         MovePlayer(fElapsedTime);
-        DrawRect(player.x, player.y, mazeWallSize / 2, mazeWallSize / 2, olc::YELLOW);
+        DrawRect(player.x, player.y, player.size, player.size, olc::YELLOW);
         // DrawCircle(player.x, player.y, 5, olc::BLACK);
 
         return 1;
