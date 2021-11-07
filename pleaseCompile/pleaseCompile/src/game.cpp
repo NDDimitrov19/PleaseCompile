@@ -1,6 +1,7 @@
 #include "game.h"
 
-void Game::MovePlayer(float fElapsedTime) {
+void Game::MovePlayer(float fElapsedTime) 
+{
     short movementX = 0;
     short movementY = 0;
     if (GetKey(olc::Key::W).bHeld || GetKey(olc::Key::UP).bHeld)
@@ -22,8 +23,9 @@ void Game::MovePlayer(float fElapsedTime) {
         player.y += movementY * player.speed * fElapsedTime;
     }
 }
-bool Game::OnUserCreate()  {
 
+bool Game::OnUserCreate()  
+{
     for (auto& cell : maze.grid)
     {
         if (cell.walls[Maze::CellWallDirs::top]) {
@@ -40,17 +42,23 @@ bool Game::OnUserCreate()  {
         //    this->wallCoords.push_back({ {cell->x * 20, cell->y * 20}, {cell->x * 20, cell->y * 20 + 20} });
         //}
     }
+
     return 1;
 }
-bool Game::OnUserUpdate(float fElapsedTime)  {
+
+bool Game::OnUserUpdate(float fElapsedTime)  
+{
         FillRect(0, 0, ScreenWidth(), ScreenHeight(), olc::BLACK);
+        DrawRect(0, 0, ScreenWidth() - 1, ScreenHeight() - 1, olc::WHITE);
+
         MovePlayer(fElapsedTime);
         DrawRect(player.x, player.y, mazeWallSize / 2, mazeWallSize / 2, olc::YELLOW);
         // DrawCircle(player.x, player.y, 5, olc::BLACK);
-        DrawRect(0, 0, ScreenWidth() - 1, ScreenHeight() - 1, olc::WHITE);
+
         for (auto& wall : this->wallCoords)
         {
             DrawLine(wall.first.x, wall.first.y, wall.second.x, wall.second.y, olc::WHITE);
         }
+
         return 1;
 }
