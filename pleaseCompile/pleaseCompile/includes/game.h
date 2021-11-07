@@ -18,7 +18,8 @@ private:
         float speed;
     };
 
-    
+    int nLayerBackground;
+
     struct coords
     {
         int x;

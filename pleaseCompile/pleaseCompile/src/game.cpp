@@ -43,22 +43,25 @@ bool Game::OnUserCreate()
         //}
     }
 
+    nLayerBackground = CreateLayer();
+    SetDrawTarget(nLayerBackground);
+    for (auto& wall : this->wallCoords)
+    {
+        DrawLine(wall.first.x, wall.first.y, wall.second.x, wall.second.y, olc::WHITE);
+    }
+    EnableLayer(nLayerBackground, true);
+    SetDrawTarget(nullptr);
     return 1;
 }
 
 bool Game::OnUserUpdate(float fElapsedTime)  
 {
-        FillRect(0, 0, ScreenWidth(), ScreenHeight(), olc::BLACK);
+        Clear(olc::BLANK);
         DrawRect(0, 0, ScreenWidth() - 1, ScreenHeight() - 1, olc::WHITE);
 
         MovePlayer(fElapsedTime);
         DrawRect(player.x, player.y, mazeWallSize / 2, mazeWallSize / 2, olc::YELLOW);
         // DrawCircle(player.x, player.y, 5, olc::BLACK);
-
-        for (auto& wall : this->wallCoords)
-        {
-            DrawLine(wall.first.x, wall.first.y, wall.second.x, wall.second.y, olc::WHITE);
-        }
 
         return 1;
 }
