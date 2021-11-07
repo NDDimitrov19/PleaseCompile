@@ -1,4 +1,5 @@
 #include "game.h"
+#include <string>
 
 Game::Game()
 {
@@ -7,10 +8,157 @@ Game::Game()
     maze = Maze(mazeSize[0], mazeSize[1]);
     mazeWallSize = WINDOW_HEIGHT / mazeSize[1];
     player = { (float)(mazeWallSize / 4), (float)(mazeWallSize / 4), 30.0f ,(float)(mazeWallSize / 2) };
-    scheme = { olc::BLACK, olc::WHITE,olc::YELLOW,olc::RED , olc::GREEN };
+    scheme = { olc::BLACK, olc::WHITE,olc::YELLOW,olc::RED , olc::GREEN, olc::WHITE, olc::RED };
 }
 
+int menuOption = 0;
 
+bool Game::Menu() 
+{
+    //DrawString({ 0,0 }, std::to_string(GetMouseX()));
+    //DrawString({ 0,20 }, std::to_string(GetMouseY()));
+    DrawString({ 69,0 }, "Menu", scheme.textColor, 2U);
+
+    if (GetMouseX() > 20 && GetMouseY() > 50 && GetMouseX() < 100 && GetMouseY() < 60)
+    {
+        DrawString({ 20,50 }, "Play", scheme.highLightedColor, 1U);
+        if (GetMouse(0).bPressed)
+        {
+            menuOption=1; return true;
+        }
+    }
+    else
+    {
+        DrawString({ 20,50 }, "Play", scheme.textColor, 1U);
+    }
+
+    if (GetMouseX() > 20 && GetMouseY() > 70 && GetMouseX() < 140 && GetMouseY() < 80)
+    {
+        DrawString({ 20,70 }, "How to play", scheme.highLightedColor, 1U);
+        if (GetMouse(0).bPressed)
+        {
+            menuOption = 2; return true;
+        }
+    }
+    else 
+        DrawString({ 20,70 }, "How to play", scheme.textColor, 1U);
+
+    if (GetMouseX() > 20 && GetMouseY() > 90 && GetMouseX() < 125 && GetMouseY() < 98)
+    {
+        DrawString({ 20,90 }, "Credits", scheme.highLightedColor, 1U);
+        if (GetMouse(0).bPressed)
+        {
+            menuOption = 3; return true;
+        }
+    }
+    else
+        DrawString({ 20,90 }, "Credits", scheme.textColor, 1U);
+
+    if (GetMouseX() > 20 && GetMouseY() > 110 && GetMouseX() < 131 && GetMouseY() < 117)
+    {
+        DrawString({ 20,110 }, "RageQuit", scheme.highLightedColor, 1U);
+        if (GetMouse(0).bPressed)
+        {
+            menuOption = 4; return true;
+        }
+    }
+    else
+        DrawString({ 20,110 }, "RageQuit", scheme.textColor, 1U);
+}
+
+bool Game::MenuPlay()
+{
+    Clear(scheme.background);
+   //DrawString({ 0,0 }, std::to_string(GetMouseX()));
+   //DrawString({ 0,20 }, std::to_string(GetMouseY()));
+    DrawString({ 20,0 }, "Difficulty", scheme.textColor, 2U);
+
+    if (GetMouseX() > 20 && GetMouseY() > 50 && GetMouseX() < 100 && GetMouseY() < 60)
+    {
+        DrawString({ 20,50 }, "I'm too young to die", olc::CYAN, 1U);
+    }
+    else
+        DrawString({ 20,50 }, "I'm too young to die", scheme.textColor, 1U);
+
+    if (GetMouseX() > 20 && GetMouseY() > 70 && GetMouseX() < 140 && GetMouseY() < 80)
+    {
+        DrawString({ 20,70 }, "Hey, not too rough", olc::GREEN, 1U);
+    }
+    else
+        DrawString({ 20,70 }, "Hey, not too rough", scheme.textColor, 1U);
+
+    if (GetMouseX() > 20 && GetMouseY() > 90 && GetMouseX() < 125 && GetMouseY() < 98)
+    {
+        DrawString({ 20,90 }, "Hurt me plenty", olc::YELLOW, 1U);
+    }
+    else
+        DrawString({ 20,90 }, "Hurt me plenty", scheme.textColor, 1U);
+
+    if (GetMouseX() > 20 && GetMouseY() > 110 && GetMouseX() < 131 && GetMouseY() < 117)
+    {
+        DrawString({ 20,110 }, "Ultra-Violence", olc::VERY_DARK_RED, 1U);
+    }
+    else
+        DrawString({ 20,110 }, "Ultra-Violence", scheme.textColor, 1U);
+
+    if (GetMouseX() > 20 && GetMouseY() > 130 && GetMouseX() < 92 && GetMouseY() < 138)
+    {
+        DrawString({ 20,130 }, "Nightmare", olc::RED, 1U);
+    }
+    else
+        DrawString({ 20,130 }, "Nightmare", scheme.textColor, 1U);
+
+    if (GetMouseX() > 20 && GetMouseY() > 150 && GetMouseX() < 50 && GetMouseY() < 158)
+    {
+        DrawString({ 20,150 }, "Back", scheme.highLightedColor, 1U);
+        if (GetMouse(0).bPressed)
+        {
+            menuOption = 0;
+            return false;
+        }
+    }
+    else
+        DrawString({ 20,150 }, "Back", scheme.textColor, 1U);
+}
+
+bool Game::MenuHow()
+{
+    DrawString({ 69,0 }, "Guide", scheme.textColor, 2U);
+    DrawString({ 50,30 }, "CONTROLS:", scheme.textColor, 1U);
+    DrawString({ 50,50 }, "W A S D", olc::GREEN, 1U);
+    DrawString({ 50,70 }, "Arrow Keys", olc::GREEN, 1U);
+    DrawString({ 50,90 }, "Green => Win", scheme.textColor, 1U);
+
+    if (GetMouseX() > 20 && GetMouseY() > 110 && GetMouseX() < 131 && GetMouseY() < 117)
+    {
+        DrawString({ 80,110 }, "Back", scheme.highLightedColor, 1U);
+        if (GetMouse(0).bPressed)
+        {
+            menuOption = 0; return true;
+        }
+    }
+    else
+        DrawString({ 80,110 }, "Back", scheme.textColor, 1U);
+}
+
+bool Game::MenuCredits()
+{
+    DrawString({ 39,0 }, "Credits", scheme.textColor, 2U);
+    DrawString({ 50,30 }, "Nikolai Dimitrov", scheme.textColor, 1U);
+    DrawString({ 50,50 }, "Nikola Peshev", scheme.textColor, 1U);
+    DrawString({ 50,70 }, "Stefan Ravninov", scheme.textColor, 1U);
+    DrawString({ 50,90 }, "Egor Semenov", scheme.textColor, 1U);
+    if (GetMouseX() > 20 && GetMouseY() > 110 && GetMouseX() < 131 && GetMouseY() < 117)
+    {
+        DrawString({ 80,110 }, "Back", scheme.highLightedColor, 1U);
+        if (GetMouse(0).bPressed)
+        {
+            menuOption = 0; return true;
+        }
+    }
+    else
+        DrawString({ 80,110 }, "Back", scheme.textColor, 1U);
+}
 
 void Game::createMazeData()
 {
@@ -130,30 +278,44 @@ void Game::drawStartFinish()
 bool Game::OnUserCreate()  
 {
     // Set up maze background layer
-    createMazeData();
+    //createMazeData();
 
-    nLayerBackground = CreateLayer();
-    SetDrawTarget(nLayerBackground);
+    //nLayerBackground = CreateLayer();
+    //SetDrawTarget(nLayerBackground);
 
-    Clear(scheme.background);
-    drawStartFinish();
-    for (auto& wall : this->wallCoords)
-    {
-        DrawLine(wall.first.x, wall.first.y, wall.second.x, wall.second.y, scheme.walls);
-    }
+    //Clear(scheme.background);
+    //drawStartFinish();
+    //for (auto& wall : this->wallCoords)
+    //{
+    //    DrawLine(wall.first.x, wall.first.y, wall.second.x, wall.second.y, scheme.walls);
+    //}
 
-    EnableLayer(nLayerBackground, true);
-    SetDrawTarget(nullptr);
+    //EnableLayer(nLayerBackground, true);
+    //SetDrawTarget(nullptr);
 
     return 1;
 }
 
 bool Game::OnUserUpdate(float fElapsedTime)  
 {
-        Clear(olc::BLANK);
-
+    Clear(olc::BLANK);
+    switch (menuOption) {
+    case 0:
+        Menu();
+        break;
+    case 1:
+        MenuPlay();
+        break;
+    case 2:
+        MenuHow();
+        break;
+    case 3:
+        MenuCredits();
+    }
+    if (false) 
+    {
         handleInput(fElapsedTime);
         DrawRect(player.x, player.y, player.size, player.size, scheme.player);
-
-        return 1;
+    }
+    return 1;
 }

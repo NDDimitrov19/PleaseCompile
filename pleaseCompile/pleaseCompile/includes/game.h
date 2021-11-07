@@ -19,6 +19,8 @@ private:
         olc::Pixel player;
         olc::Pixel start;
         olc::Pixel end;
+        olc::Pixel textColor;
+        olc::Pixel highLightedColor;
     } scheme;
 
     struct Player {
@@ -41,6 +43,11 @@ private:
     int mazeSize[2];
     int mazeWallSize;
     int nLayerBackground;
+
+    bool Menu();
+    bool MenuPlay();
+    bool MenuCredits();
+    bool MenuHow();
 
     void createMazeData();
 
