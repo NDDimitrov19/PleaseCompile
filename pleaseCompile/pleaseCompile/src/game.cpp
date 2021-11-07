@@ -49,6 +49,7 @@ bool Game::OnUserCreate()
     {
         DrawLine(wall.first.x, wall.first.y, wall.second.x, wall.second.y, olc::WHITE);
     }
+    DrawRect(0, 0, ScreenWidth() - 1, ScreenHeight() - 1, olc::WHITE);
     EnableLayer(nLayerBackground, true);
     SetDrawTarget(nullptr);
     return 1;
@@ -57,7 +58,6 @@ bool Game::OnUserCreate()
 bool Game::OnUserUpdate(float fElapsedTime)  
 {
         Clear(olc::BLANK);
-        DrawRect(0, 0, ScreenWidth() - 1, ScreenHeight() - 1, olc::WHITE);
 
         MovePlayer(fElapsedTime);
         DrawRect(player.x, player.y, mazeWallSize / 2, mazeWallSize / 2, olc::YELLOW);
