@@ -178,6 +178,7 @@
     <Image Include="C:\Users\Nikola\Desktop\icon.ico" />
     <Image Include="icon.ico" />
     <Image Include="resources\icon.ico" />
+    <Image Include="resources\player.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

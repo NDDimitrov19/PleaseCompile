@@ -5,7 +5,7 @@ Game::Game()
 {
     mazeSize[0] = 10;
     mazeSize[1] = 10;
-    scheme = { olc::BLACK, olc::WHITE,olc::YELLOW,olc::RED , olc::GREEN, olc::WHITE, olc::RED };
+    scheme = { olc::BLACK, olc::WHITE,olc::WHITE,olc::RED , olc::GREEN, olc::WHITE, olc::RED };
 }
 
 int menuOption = 0;
@@ -340,13 +340,16 @@ void Game::drawStartFinish()
 
 bool Game::OnUserCreate()  
 {
+    sprPlayer = new olc::Sprite("./resources/player.png");
+    decPlayer = new olc::Decal(sprPlayer);
+
     return 1;
 }
 
 bool Game::OnUserUpdate(float fElapsedTime)  
 {
     Clear(olc::BLANK);
-
+    
     if (!backgroundCreated) 
     {
         if (menuOption == 4) return false;
@@ -363,6 +366,10 @@ bool Game::OnUserUpdate(float fElapsedTime)
     {
         handleInput(fElapsedTime);
         DrawRect(player.x, player.y, player.size, player.size, scheme.player);
+        DrawDecal({ player.x, player.y }, decPlayer, { 0.01f * (float)player.size, 0.01f * (float)player.size });
+        std::cout << player.size << std::endl;
     }
+    
+
     return 1;
 }

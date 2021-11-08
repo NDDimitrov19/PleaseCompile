@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <memory>
 #include "maze.h"
 #include "olcPixelGameEngine.h"
 
@@ -29,6 +30,9 @@ private:
         float speed;
         float size;
     } player;
+
+    olc::Sprite* sprPlayer;
+    olc::Decal* decPlayer;
 
     struct coords
     {
