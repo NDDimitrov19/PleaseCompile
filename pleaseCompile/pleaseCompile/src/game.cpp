@@ -16,7 +16,7 @@ void Game::initMazeData()
 {
     maze = Maze(mazeSize[0], mazeSize[1]);
     mazeWallSize = WINDOW_HEIGHT / mazeSize[1];
-    player = { (float)(mazeWallSize / 4), (float)(mazeWallSize / 4), 30.0f ,(float)(mazeWallSize / 2) };
+    player = { (float)(mazeWallSize / 4), (float)(mazeWallSize / 4),(float)mazeWallSize * 2.0f ,(float)(mazeWallSize / 2) };
 }
 
 void Game::handleMenu()
@@ -33,13 +33,17 @@ void Game::handleMenu()
         break;
     case 3:
         MenuCredits();
+        break;
+
+    case 4:
+        MenuEndGame();
+        break;
     }
 }
 
-bool Game::Menu() 
+bool Game::Menu()
 {
-    //DrawString({ 0,0 }, std::to_string(GetMouseX()));
-    //DrawString({ 0,20 }, std::to_string(GetMouseY()));
+
     DrawString({ 69,5 }, "Menu", scheme.textColor, 2U);
 
     if (GetMouseX() > 20 && GetMouseY() > 50 && GetMouseX() < 100 && GetMouseY() < 60)
@@ -47,7 +51,7 @@ bool Game::Menu()
         DrawString({ 20,50 }, "Play", scheme.highLightedColor, 1U);
         if (GetMouse(0).bPressed)
         {
-            menuOption=1; return true;
+            menuOption = 1; return true;
         }
     }
     else
@@ -63,7 +67,7 @@ bool Game::Menu()
             menuOption = 2; return true;
         }
     }
-    else 
+    else
         DrawString({ 20,70 }, "How to play", scheme.textColor, 1U);
 
     if (GetMouseX() > 20 && GetMouseY() > 90 && GetMouseX() < 125 && GetMouseY() < 98)
@@ -82,7 +86,7 @@ bool Game::Menu()
         DrawString({ 20,110 }, "RageQuit", scheme.highLightedColor, 1U);
         if (GetMouse(0).bPressed)
         {
-            menuOption = 4; return true;
+            menuOption = 5; return true;
         }
     }
     else
@@ -91,8 +95,8 @@ bool Game::Menu()
 
 bool Game::MenuPlay()
 {
-   //DrawString({ 0,0 }, std::to_string(GetMouseX()));
-   //DrawString({ 0,20 }, std::to_string(GetMouseY()));
+    //DrawString({ 0,0 }, std::to_string(GetMouseX()));
+    //DrawString({ 0,20 }, std::to_string(GetMouseY()));
     DrawString({ 20,5 }, "Difficulty", scheme.textColor, 2U);
 
     if (GetMouseX() > 20 && GetMouseY() > 50 && GetMouseX() < 100 && GetMouseY() < 60)
@@ -186,8 +190,8 @@ bool Game::MenuHow()
 
 bool Game::MenuCredits()
 {
-    //DrawString({ 0,0 }, std::to_string(GetMouseX()));
-    //DrawString({ 0,20 }, std::to_string(GetMouseY()));
+    // DrawString({ 0,0 }, std::to_string(GetMouseX()));
+    // DrawString({ 0,20 }, std::to_string(GetMouseY()));
     DrawString({ 39,5 }, "Credits", scheme.textColor, 2U);
     DrawString({ 50,60 }, "Nikolai Dimitrov", scheme.textColor, 1U);
     DrawString({ 50,80 }, "Nikola Peshev", scheme.textColor, 1U);
@@ -205,8 +209,58 @@ bool Game::MenuCredits()
         DrawString({ 80,140 }, "Back", scheme.textColor, 1U);
 }
 
+bool  Game::MenuEndGame()
+{
+    // DrawString({ 0,0 }, std::to_string(GetMouseX()));
+    // DrawString({ 0,20 }, std::to_string(GetMouseY()));
+    if (GetMouseX() >= 20 && GetMouseY() >= 70 && GetMouseX() <= 120 && GetMouseY() < 80)
+    {
+        DrawString({ 20,70 }, "Back to menu", scheme.highLightedColor, 1U);
+        if (GetMouse(0).bPressed)
+        {
+            menuOption = 0; return true;
+        }
+    }
+    else
+        DrawString({ 20,70 }, "Back to menu", scheme.textColor, 1U);
+
+    switch (mazeSize[0])
+    {
+    case 5: {
+        DrawString({ 20,20 }, "Eh not impressive", scheme.textColor, 1U);
+        break;
+    }
+    case 10: {
+        DrawString({ 20,20 }, "You won, Good job", scheme.textColor, 1U);
+        break;
+    }
+    case 20: {
+        DrawString({ 20,20 }, "You won, Good job!!", scheme.textColor, 1U);
+        break;
+    }
+    case 25: {
+        DrawString({ 20,20 }, "Get a life", scheme.textColor, 1U);
+        break;
+    }
+    default:
+        break;
+    }
+    if (GetMouseX() >= 20 && GetMouseY() >= 110 && GetMouseX() <= 83 && GetMouseY() <= 116)
+    {
+        DrawString({ 20,110 }, "RageQuit", scheme.highLightedColor, 1U);
+        if (GetMouse(0).bPressed)
+        {
+            menuOption = 5; return true;
+        }
+    }
+    else
+        DrawString({ 20,110 }, "RageQuit", scheme.textColor, 1U);
+}
+
 void Game::createMazeData()
 {
+    wallCoords.clear();
+
     // Add outer edges
     wallCoords.push_back({ {0, 0}, {ScreenWidth(), 0} });
     wallCoords.push_back({ {ScreenWidth() - 1, 0}, {ScreenWidth() - 1, ScreenHeight() - 1} });
@@ -233,11 +287,10 @@ void Game::createMazeData()
 }
 
 void Game::createBackgroundLayer()
-{    
+{
     //Set up maze background layer
     createMazeData();
 
-    nLayerBackground = CreateLayer();
     SetDrawTarget(nLayerBackground);
 
     Clear(scheme.background);
@@ -299,10 +352,16 @@ void Game::handleInput(float fElapsedTime)
         player.y = (float)(mazeWallSize / 4);
     }
 
+    if (GetKey(olc::Key::L).bPressed)
+    {
+        player.x = 199;
+        player.y = 199;
+    }
+
     if (GetKey(olc::Key::W).bHeld || GetKey(olc::Key::UP).bHeld)
     {
-        if(!isColliding(player.x,player.y-1, player.size))
-           movementY = -1;
+        if (!isColliding(player.x, player.y - 1, player.size))
+            movementY = -1;
     }
     if (GetKey(olc::Key::D).bHeld || GetKey(olc::Key::RIGHT).bHeld)
     {
@@ -338,8 +397,27 @@ void Game::drawStartFinish()
     FillRect(ScreenWidth() - mazeWallSize + 1, ScreenHeight() - mazeWallSize + 1, mazeWallSize, mazeWallSize, scheme.end);
 }
 
+void Game::winChecker()
+{
+    if (player.x > ScreenWidth() - mazeWallSize + 1 && player.y > ScreenHeight() - mazeWallSize + 1)
+    {
+        SetDrawTarget(nLayerBackground);
+        Clear(olc::BLANK);
+        SetDrawTarget(nullptr);
+
+
+        backgroundCreated = false;
+        menuOption = 4;
+    }
+}
+
 bool Game::OnUserCreate()  
 {
+    nLayerBackground = CreateLayer();
+    SetDrawTarget(nLayerBackground);
+    Clear(olc::BLANK);
+    EnableLayer(nLayerBackground, false);
+    SetDrawTarget(nullptr);
     sprPlayer = new olc::Sprite("./resources/player.png");
     decPlayer = new olc::Decal(sprPlayer);
 
@@ -352,7 +430,7 @@ bool Game::OnUserUpdate(float fElapsedTime)
     
     if (!backgroundCreated) 
     {
-        if (menuOption == 4) return false;
+        if (menuOption == 5) return false;
         handleMenu();
     }
     if (gameStarted)
@@ -367,7 +445,7 @@ bool Game::OnUserUpdate(float fElapsedTime)
         handleInput(fElapsedTime);
         DrawRect(player.x, player.y, player.size, player.size, scheme.player);
         DrawDecal({ player.x, player.y }, decPlayer, { 0.01f * (float)player.size, 0.01f * (float)player.size });
-        std::cout << player.size << std::endl;
+        winChecker();
     }
     
 

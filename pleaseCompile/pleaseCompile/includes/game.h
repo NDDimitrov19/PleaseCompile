@@ -53,6 +53,7 @@ private:
     bool MenuPlay();
     bool MenuCredits();
     bool MenuHow();
+    bool MenuEndGame();
 
     void createMazeData();
     void createBackgroundLayer();
@@ -62,6 +63,7 @@ private:
     void handleInput(float fElapsedTime);
 
     void drawStartFinish();
+    void winChecker();
 
     bool OnUserCreate() override;
     bool OnUserUpdate(float fElapsedTime) override;
